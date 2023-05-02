@@ -1,4 +1,4 @@
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
@@ -20,7 +20,22 @@ const newspapers = [
         name: "telegraph",
         address: "https://www.telegraph.co.uk/climate-change/",
         base: 'https://www.telegraph.co.uk'
-    }
+    },
+    {
+        name: "bbc",
+        address: "https://www.bbc.co.uk/news/science_and_environment",
+        base: 'https://www.bbc.co.uk'
+    },
+    {
+        name: "sun",
+        address: "https://www.thesun.co.uk/topic/climate-change-environment/",
+        base: ''
+    },
+    {
+        name: "dm",
+        address: "https://www.dailymail.co.uk/news/climate_change_global_warming/index.html",
+        base: ''
+    },
 ]
 const articles = [];
 
@@ -54,7 +69,7 @@ app.get('/news', (req, res) => {
 })
 
 // route to get articles from a specific newspaper
-app.get('/news/:newspaperId', async (req, res) => {
+app.get('/news/:newspaperId', (req, res) => {
     const newspaperId = req.params.newspaperId; //gets the information through the requisition params
     const newspaperAddress = newspapers.filter((newspaper) => newspaper.name == newspaperId)[0].address; //filters the newspaper that matches the address
     const newspaperBase = newspapers.filter((newspaper) => newspaper.name == newspaperId)[0].base; //filters the newspaper that matches the base url
